@@ -9,7 +9,7 @@ export const usersignin=async(req,res)=>{
         if(resdata){
             const checkpassword=bcrypt.compare(password,resdata.password)
             if(checkpassword){
-            const token=jwt.sign({email:resdata.email,name:resdata.name,role:resdata.role},"Sample2024")
+            const token=jwt.sign({email:resdata.email,name:resdata.name,role:resdata.role},"Muthu123")
             res.send({message:"successfully signin",token});
             }
             else{
