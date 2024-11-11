@@ -20,11 +20,24 @@ export const addtask=async(req,res)=>{
 export const gettask=async(req,res)=>{
     try{
         
-        console.log(req.body,"user")
-        const resdata=await Addtask.find({});
-            
-        console.log(resdata)
-    res.send(resdata);
+        console.log(req?.query,"user")
+        const {filterData}=req?.query
+        console.log(filterData,"sd")
+        if(filterData=="dashboard"){
+            const totaltask=await Addtask.find({});
+            const completed=await Addtask.find({taskStage:"Complete"});
+            const inprogress=await Addtask.find({taskStage:"In Progress"});
+        res.send({totaltask:totaltask.length,completed:completed.length,inprogress:inprogress.length});
+        }
+        else{
+            const resdata=await Addtask.find(
+                filterData?{
+                    taskStage:filterData}:{});
+                
+            console.log(resdata)
+        res.send(resdata);
+        }
+        
 
     }
     catch(err){
