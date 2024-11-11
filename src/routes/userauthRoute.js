@@ -10,7 +10,7 @@ userauthRoute.post('/apiusersignup',usersignup)
 userauthRoute.post('/apiadduser',adduser)
 userauthRoute.get('/apigetuser',getuser)
 userauthRoute.put('/apiupdatetuser',updateUser)
-userauthRoute.delete('/apideleteuser',deleteUser)
+userauthRoute.post('/apideleteuser',deleteUser)
 
 userauthRoute.get('/asd',as)
 export default userauthRoute;

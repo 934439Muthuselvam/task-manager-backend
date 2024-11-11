@@ -36,8 +36,7 @@ export const updateUser=async(req,res)=>{
     try{
         
         console.log(req.body,"user")
-        const{_id,...data}=req.body
-        const resdata=await AddUser.findOneAndUpdate({_id},{$set:req.body},{new:true});
+        const resdata=await AddUser.findOneAndUpdate({_id:req?.body?._id},{$set:req.body},{new:true});
         res.send("updated");
 
     }
@@ -48,18 +47,18 @@ export const updateUser=async(req,res)=>{
 }
 
 
-export const deleteUser = async (req, res) => {
-    try {
-        const { id } = req.params;
-        const result = await AddUser.findByIdAndDelete(id);
+export const deleteUser=async(req,res)=>{
+    try{
         
-        if (!result) {
-            return res.status(404).json({ message: "User not found" });
-        }
         
-        res.json({ message: "User successfully deleted" });
-    } catch (err) {
-        console.error("Error deleting user:", err);
-        res.status(500).json({ message: "Failed to delete user" });
+        const{_id}=req.body
+        console.log(_id,"delete")
+        const resdata=await AddUser.deleteOne({_id:_id});
+        res.send("updated");
+
     }
-};
+    catch(err){
+       console.log(err); 
+
+    }
+}

@@ -4,8 +4,11 @@ import Addtask from "../../Models/addtaskModel.js";
 export const addtask=async(req,res)=>{
     try{
         
-        console.log(req.body,"user")
-        const resdata=await new Addtask(req.body).save();
+        console.log(req.body,"user","add")
+        const{data}=req.body
+        data.assignedUser=data?.assignedUser.includes(",")?data?.assignedUser?.split(","):[data?.assignedUser]
+        console.log(data)
+        const resdata=await new Addtask(data).save();
             
         console.log(resdata)
     res.send({message:"successfully saved"});
@@ -19,22 +22,32 @@ export const addtask=async(req,res)=>{
 
 export const gettask=async(req,res)=>{
     try{
-        
-        console.log(req?.query,"user")
-        const {filterData}=req?.query
-        console.log(filterData,"sd")
-        if(filterData=="dashboard"){
+        const {filterData,userdata}=req?.query
+        console.log(filterData,userdata)
+        if(userdata!="admin"&&filterData=="dashboard"){
+            const totaltask=await Addtask.find({assignedUser:{$in:[userdata]}});
+            const completed=await Addtask.find({taskStage:"Complete",assignedUser:{$in:[userdata]}});
+            const inprogress=await Addtask.find({taskStage:"In Progress",assignedUser:{$in:[userdata]}});
+        res.send({totaltask:totaltask.length,completed:completed.length,inprogress:inprogress.length});
+        }
+        else if(filterData=="dashboard"&&userdata=="admin"){
             const totaltask=await Addtask.find({});
             const completed=await Addtask.find({taskStage:"Complete"});
             const inprogress=await Addtask.find({taskStage:"In Progress"});
-        res.send({totaltask:totaltask.length,completed:completed.length,inprogress:inprogress.length});
+            res.send({totaltask:totaltask.length,completed:completed.length,inprogress:inprogress.length});
+        }
+        else if(userdata=="admin"){
+            const resdata=await Addtask.find(
+                filterData?{
+                    taskStage:filterData}:{});
+        res.send(resdata);
         }
         else{
             const resdata=await Addtask.find(
                 filterData?{
-                    taskStage:filterData}:{});
+                    taskStage:filterData,assignedUser:{$in:[userdata]}}:{assignedUser:{$in:[userdata]}});
                 
-            console.log(resdata)
+            console.log(resdata,"resdata")
         res.send(resdata);
         }
         
@@ -59,3 +72,4 @@ export const updatetask=async(req,res)=>{
 
     }
 }
+
