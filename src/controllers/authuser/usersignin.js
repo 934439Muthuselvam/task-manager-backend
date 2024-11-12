@@ -6,7 +6,7 @@ import AddUser from "../../Models/adduserModel.js";
 export const usersignin=async(req,res)=>{
     try{
         const{email,password}=req.body
-        const resdata=await AddUser.findOne({email});
+        const resdata=await AddUser.findOne({email,password});
         if(resdata){
             const token=jwt.sign({email:resdata.email,name:resdata.name,role:resdata.role},"Muthu123")
             res.send({message:"successfully signin",token});

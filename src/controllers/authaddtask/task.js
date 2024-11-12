@@ -24,19 +24,19 @@ export const gettask=async(req,res)=>{
     try{
         const {filterData,userdata}=req?.query
         console.log(filterData,userdata)
-        if(userdata!="admin"&&filterData=="dashboard"){
+        if(userdata!="admin@gmail.com"&&filterData=="dashboard"){
             const totaltask=await Addtask.find({assignedUser:{$in:[userdata]}});
             const completed=await Addtask.find({taskStage:"Complete",assignedUser:{$in:[userdata]}});
             const inprogress=await Addtask.find({taskStage:"In Progress",assignedUser:{$in:[userdata]}});
         res.send({totaltask:totaltask.length,completed:completed.length,inprogress:inprogress.length});
         }
-        else if(filterData=="dashboard"&&userdata=="admin"){
+        else if(filterData=="dashboard"&&userdata=="admin@gmail.com"){
             const totaltask=await Addtask.find({});
             const completed=await Addtask.find({taskStage:"Complete"});
             const inprogress=await Addtask.find({taskStage:"In Progress"});
             res.send({totaltask:totaltask.length,completed:completed.length,inprogress:inprogress.length});
         }
-        else if(userdata=="admin"){
+        else if(userdata=="admin@gmail.com"){
             const resdata=await Addtask.find(
                 filterData?{
                     taskStage:filterData}:{});
