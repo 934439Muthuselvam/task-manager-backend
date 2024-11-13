@@ -6,8 +6,6 @@ export const addtask=async(req,res)=>{
         
         console.log(req.body,"user","add")
         const{data}=req.body
-        data.assignedUser=data?.assignedUser.includes(",")?data?.assignedUser?.split(","):[data?.assignedUser]
-        console.log(data)
         const resdata=await new Addtask(data).save();
             
         console.log(resdata)
