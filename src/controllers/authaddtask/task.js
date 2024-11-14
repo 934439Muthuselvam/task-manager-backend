@@ -26,13 +26,15 @@ export const gettask=async(req,res)=>{
             const totaltask=await Addtask.find({assignedUser:{$in:[userdata]}});
             const completed=await Addtask.find({taskStage:"Complete",assignedUser:{$in:[userdata]}});
             const inprogress=await Addtask.find({taskStage:"In Progress",assignedUser:{$in:[userdata]}});
-        res.send({totaltask:totaltask.length,completed:completed.length,inprogress:inprogress.length});
+            const problem=await Addtask.find({taskStage:"Problem",assignedUser:{$in:[userdata]}});
+            res.send({totaltask:totaltask?.length,completed:completed?.length,inprogress:inprogress?.length,problem:problem?.length});
         }
-        else if(filterData=="dashboard"&&userdata=="admin@gmail.com"){
+        else if(userdata=="admin@gmail.com"&&filterData=="dashboard"){
             const totaltask=await Addtask.find({});
             const completed=await Addtask.find({taskStage:"Complete"});
             const inprogress=await Addtask.find({taskStage:"In Progress"});
-            res.send({totaltask:totaltask.length,completed:completed.length,inprogress:inprogress.length});
+            const problem=await Addtask.find({taskStage:"Problem"});
+            res.send({totaltask:totaltask?.length,completed:completed?.length,inprogress:inprogress?.length,problem:problem?.length});
         }
         else if(userdata=="admin@gmail.com"){
             const resdata=await Addtask.find(
@@ -58,10 +60,8 @@ export const gettask=async(req,res)=>{
 }
 export const updatetask=async(req,res)=>{
     try{
-        
-        console.log(req.body,"user")
-        const{_id,...data}=req.body
-        const resdata=await Addtask.findOneAndUpdate({_id},{$set:req.body},{new:true});
+        const{_id,...data}=req?.body?.taskdata
+        const resdata=await Addtask.findOneAndUpdate({_id},{$set:data},{new:true});
         res.send("updated");
 
     }
