@@ -24,17 +24,19 @@ export const gettask=async(req,res)=>{
         console.log(filterData,userdata)
         if(userdata!="admin@gmail.com"&&filterData=="dashboard"){
             const totaltask=await Addtask.find({assignedUser:{$in:[userdata]}});
+            const assignedtask=await Addtask.find({taskStage:"Assigned",assignedUser:{$in:[userdata]}});
             const completed=await Addtask.find({taskStage:"Complete",assignedUser:{$in:[userdata]}});
             const inprogress=await Addtask.find({taskStage:"In Progress",assignedUser:{$in:[userdata]}});
-            const problem=await Addtask.find({taskStage:"Problem",assignedUser:{$in:[userdata]}});
-            res.send({totaltask:totaltask?.length,completed:completed?.length,inprogress:inprogress?.length,problem:problem?.length});
+            const problem=await Addtask.find({taskStage:"Blocked",assignedUser:{$in:[userdata]}});
+            res.send({assignedtask:assignedtask?.length,totaltask:totaltask?.length,completed:completed?.length,inprogress:inprogress?.length,problem:problem?.length});
         }
         else if(userdata=="admin@gmail.com"&&filterData=="dashboard"){
             const totaltask=await Addtask.find({});
+            const assignedtask=await Addtask.find({taskStage:"Assigned"});
             const completed=await Addtask.find({taskStage:"Complete"});
             const inprogress=await Addtask.find({taskStage:"In Progress"});
-            const problem=await Addtask.find({taskStage:"Problem"});
-            res.send({totaltask:totaltask?.length,completed:completed?.length,inprogress:inprogress?.length,problem:problem?.length});
+            const problem=await Addtask.find({taskStage:"Blocked"});
+            res.send({assignedtask:assignedtask?.length,totaltask:totaltask?.length,completed:completed?.length,inprogress:inprogress?.length,problem:problem?.length});
         }
         else if(userdata=="admin@gmail.com"){
             const resdata=await Addtask.find(
