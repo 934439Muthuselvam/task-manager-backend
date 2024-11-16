@@ -11,7 +11,7 @@
     ],
     "routes": [
       {
-        "src": "/var/task/(.*)",                  
+        "src": "src/(.*)",                  
         "dest": "src/index.js"           
       }
     ]
