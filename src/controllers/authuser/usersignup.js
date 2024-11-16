@@ -1,5 +1,5 @@
 
-import bcrypt from 'bcrypt';
+
 import User from "../../models/userModel.js";
 
 
@@ -9,10 +9,10 @@ export const usersignup=async(req,res)=>{
         const finduser=await User.findOne({email});
         if(!finduser){
             console.log("before")
-            const hashpassword=await bcrypt.hash(password,10)
+            // const hashpassword=await bcrypt.hash(password,10)
             
             console.log("between")
-            const resdata=await new User({...req.body,password:hashpassword}).save();
+            const resdata=await new User({...req.body,password:password}).save();
             
             console.log("after")
         res.send({message:"successfully signup"});
