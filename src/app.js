@@ -7,9 +7,12 @@ import router from './routes/index.js';
 
 const app=express();
 app.use(express.json())
-app.use(cors());
-app.use(morgan('tiny'))
 
+app.use(morgan('tiny'))
+app.use(cors({
+  origin:["https://task-manager-frontend-ivory-delta.vercel.app/"],
+  credentials:true
+}));
 app.use(router);
 
 app.get('/',(req,res)=> res.send("server is running"));
