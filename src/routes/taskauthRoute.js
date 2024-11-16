@@ -1,5 +1,5 @@
 import express from 'express';
-import { addtask, gettask, updatetask } from '../controllers/authaddtask/task.js';
+import { addtask, gettask, updatetask } from 'controllers/authaddtask/task.js';
 
 
 

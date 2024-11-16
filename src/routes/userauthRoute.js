@@ -1,7 +1,7 @@
 import express from 'express';
-import {usersignin } from '../controllers/authuser/usersignin.js';
-import {as, usersignup } from '../controllers/authuser/usersignup.js';
-import { adduser, deleteUser, getuser, updateUser } from '../controllers/authadduser/user.js';
+import {usersignin } from 'controllers/authuser/usersignin.js';
+import {as, usersignup } from 'controllers/authuser/usersignup.js';
+import { adduser, deleteUser, getuser, updateUser } from 'controllers/authadduser/user.js';
 
 
 const userauthRoute=express.Router();

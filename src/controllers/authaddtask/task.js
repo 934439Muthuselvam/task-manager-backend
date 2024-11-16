@@ -1,4 +1,4 @@
-import Addtask from "../../models/addtaskModel.js";
+import Addtask from "models/addtaskModel.js";
 
 
 export const addtask=async(req,res)=>{
@@ -6,7 +6,7 @@ export const addtask=async(req,res)=>{
         
         console.log(req.body,"user","add")
         const{data}=req.body
-        const resdata=await new addtask(data).save();
+        const resdata=await new Addtask(data).save();
             
         console.log(resdata)
     res.send({message:"successfully saved"});
