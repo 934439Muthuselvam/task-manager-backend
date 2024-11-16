@@ -8,6 +8,7 @@ const addtaskSchema = new mongoose.Schema({
     taskStage: String ,enum: ["Complete", "In Progress", "Testing"] ,
     taskDate: Date,
     taskinfo:{ type: String, default: '' },
+    taskstatus:{ type: String, default: '' },
   },{timestamps:true}
   );
   
