@@ -10,8 +10,7 @@ app.use(express.json())
 
 app.use(morgan('tiny'))
 app.use(cors({
-  origin:["https://task-manager-frontend-ivory-delta.vercel.app/"],
-  credentials:true
+   
 }));
 app.use(router);
 

@@ -1,4 +1,4 @@
-import app from "./app.js";
+import app from "./src/app.js";
 const PORT = 7000; // Set your port
 
 app.listen(PORT,() => {
