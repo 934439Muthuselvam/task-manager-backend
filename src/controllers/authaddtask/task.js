@@ -20,34 +20,37 @@ export const addtask=async(req,res)=>{
 
 export const gettask=async(req,res)=>{
     try{
-        const {filterData,userdata}=req?.query
-        console.log(filterData,userdata)
+        const {filterData,userdata,taskstatus}=req?.query
+        console.log(filterData,userdata,taskstatus)
         if(userdata!="admin@gmail.com"&&filterData=="dashboard"){
             const totaltask=await Addtask.find({assignedUser:{$in:[userdata]}});
             const assignedtask=await Addtask.find({taskStage:"Assigned",assignedUser:{$in:[userdata]}});
-            const completed=await Addtask.find({taskStage:"Complete",assignedUser:{$in:[userdata]}});
-            const inprogress=await Addtask.find({taskStage:"In Progress",assignedUser:{$in:[userdata]}});
+            const submitted=await Addtask.find({taskStage:"Complete",taskstatus:""});
+            const completed=await Addtask.find({taskStage:"Complete",assignedUser:{$in:[userdata]},taskstatus:"Admin Verified"});
+            // const review=await Addtask.find({taskStage:"Review",assignedUser:{$in:[userdata]}});
+            const inprogress=await Addtask.find({taskStage:"In Progress",assignedUser:{$in:[userdata]},taskstatus:""});
             const problem=await Addtask.find({taskStage:"Blocked",assignedUser:{$in:[userdata]}});
-            res.send({assignedtask:assignedtask?.length,totaltask:totaltask?.length,completed:completed?.length,inprogress:inprogress?.length,problem:problem?.length});
+            res.send({assignedtask:assignedtask?.length,totaltask:totaltask?.length,completed:completed?.length,inprogress:inprogress?.length,problem:problem?.length,submitted:submitted?.length});
         }
         else if(userdata=="admin@gmail.com"&&filterData=="dashboard"){
             const totaltask=await Addtask.find({});
             const assignedtask=await Addtask.find({taskStage:"Assigned"});
-            const completed=await Addtask.find({taskStage:"Complete"});
+            const completed=await Addtask.find({taskStage:"Complete",taskstatus:"Admin Verified"});
+            const review=await Addtask.find({taskStage:"Complete",taskstatus:""});
             const inprogress=await Addtask.find({taskStage:"In Progress"});
             const problem=await Addtask.find({taskStage:"Blocked"});
-            res.send({assignedtask:assignedtask?.length,totaltask:totaltask?.length,completed:completed?.length,inprogress:inprogress?.length,problem:problem?.length});
+            res.send({assignedtask:assignedtask?.length,totaltask:totaltask?.length,completed:completed?.length,inprogress:inprogress?.length,problem:problem?.length,review:review?.length});
         }
         else if(userdata=="admin@gmail.com"){
             const resdata=await Addtask.find(
                 filterData?{
-                    taskStage:filterData}:{});
+                    taskStage:filterData,taskstatus:taskstatus==undefined?"":taskstatus}:{});
         res.send(resdata);
         }
         else{
             const resdata=await Addtask.find(
                 filterData?{
-                    taskStage:filterData,assignedUser:{$in:[userdata]}}:{assignedUser:{$in:[userdata]}});
+                    taskStage:filterData,taskstatus:taskstatus==undefined?"":taskstatus,assignedUser:{$in:[userdata]}}:{assignedUser:{$in:[userdata]}});
                 
             console.log(resdata,"resdata")
         res.send(resdata);
